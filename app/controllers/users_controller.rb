@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
 
-
     def create
         @user = User.new(user_params)
         if @user.save
@@ -9,6 +8,23 @@ class UsersController < ApplicationController
         else 
           render json: { status: 500, errors: @user.errors.full_messages }
         end
+    end 
+
+    def update
+      user = current_user
+      if user_params[:avatar] == "remove_photo"
+        user.avatar.purge
+        user.update(bio: user_params[:bio])
+        render json: user, logged_in: logged_in?
+      else
+        user.update(user_params)
+        render json: user, logged_in: logged_in?
+      end
+    end
+
+    def show
+      user = current_user
+      render json: user, logged_in: logged_in?
     end
 
     private
@@ -21,7 +37,9 @@ class UsersController < ApplicationController
             :password_confirmation,
             :age,
             :bio,
-            :birth_date
+            :birth_date,
+            :avatar,
+            :images
         )
     end
 end
