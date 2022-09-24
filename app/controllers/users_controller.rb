@@ -35,11 +35,11 @@ class UsersController < ApplicationController
             :name, 
             :password,
             :password_confirmation,
+            :gender,
             :age,
             :bio,
             :birth_date,
-            :avatar,
-            :images
+            :avatar
         )
     end
 end
